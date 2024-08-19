@@ -75,4 +75,4 @@ export async function GET(req) {
         console.error('Error retrieving checkout session:', error)
         return NextResponse.json({ error: { message: error.message } }, { status: 500 })
     }
-  }
+}
