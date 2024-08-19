@@ -28,9 +28,35 @@ You should return in the following JSON format:
 }
 `
 
+const openai = new OpenAI({
+    baseURL: process.env.OPENROUTER_API_URL,
+    apiKey: process.env.OPENROUTER_API_KEY,
+  });
+
 export async function POST(req) {
-    const openai = new OpenAI()
+    const openai = new OpenAI({
+        baseURL: process.env.OPENROUTER_API_URL,
+        apiKey: process.env.OPENROUTER_API_KEY,
+    });  
+
     const data = await req.text()
-  
-    // the OpenAI/openRouter API call here...
+    
+    // create a chat completion request to the API
+    const completion = await openai.chat.completions.create({
+        model:"meta-llama/llama-3.1-8b-instruct:free",
+        messages: [
+            { role: 'system', content: systemPrompt }, // instructs the AI on how to create flashcards
+            { role: 'user', content: data },
+        ],
+        response_format: { type: 'json_object' }, // ensure JSON response is received
+    }); 
+
+    console.log('API Response:', completion)
+
+    // Parse the JSON response from the OpenAI API
+    const flashcards = JSON.parse(completion.choices[0].message.content)
+
+    // Return the flashcards back to the client as a JSON response
+    return NextResponse.json(flashcards.flashcards)
+
   }
