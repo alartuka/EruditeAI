@@ -63,10 +63,9 @@ export async function GET(req) {
     const session_id = searchParams.get('session_id') // extracts the `session_id` from the query parameters of the request
   
     try {
-        if (!session_id) {
+        if (!session_id) { // no session id provided
             throw new Error('Session ID is required')
         }
-
         
         const checkoutSession = await stripe.checkout.sessions.retrieve(session_id) // uses the Stripe API to retrieve the checkout session details
   
