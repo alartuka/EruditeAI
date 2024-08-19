@@ -1,6 +1,7 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, SignInButton  } from "@clerk/nextjs";
 import { AppBar, Box, Button, Grid, Toolbar, Typography } from "@mui/material";
 import getStripe from "./utils/get-stripe";
+
 
 
 export default function Home() {
@@ -34,8 +35,10 @@ export default function Home() {
 
           {/* Conditionally render login/signup buttons or the user menu */}
           <SignedOut>
-            <Button color="inherit" href="/sign-in">Login</Button>
-            <Button color="inherit" href="/sign-up">Sign Up</Button>
+            <SignInButton />
+
+            {/* <Button color="inherit" href="/sign-in">Login</Button> */}
+            {/* <Button color="inherit" href="/sign-up">Sign Up</Button> */}
           </SignedOut>
 
           <SignedIn>

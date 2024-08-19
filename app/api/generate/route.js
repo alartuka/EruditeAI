@@ -43,7 +43,7 @@ export async function POST(req) {
     
     // create a chat completion request to the API
     const completion = await openai.chat.completions.create({
-        model:"meta-llama/llama-3.1-8b-instruct:free",
+        model:"gpt-4o-mini",
         messages: [
             { role: 'system', content: systemPrompt }, // instructs the AI on how to create flashcards
             { role: 'user', content: data },

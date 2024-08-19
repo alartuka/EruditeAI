@@ -1,13 +1,11 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import {
-  Container,
-  TextField,
-  Button,
-  Typography,
-  Box,
-} from '@mui/material'
+import { useState, useEffect } from 'react';
+import { useUser } from '@clerk/nextjs';
+import { Container, TextField, Button, Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid, Card, CardContent } from '@mui/material';
+import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase'; // Adjust the path as necessary
+
 
 export default function Generate() {
   const [text, setText] = useState('')
@@ -16,21 +14,28 @@ export default function Generate() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const handleOpenDialog = () => setDialogOpen(true)
   const handleCloseDialog = () => setDialogOpen(false)
+  const { isLoaded, isSignedIn, user } = useUser();
+
 
   useEffect(() => {
     async function getFlashcards() {
-      if (!user) return
-      const docRef = doc(collection(db, 'users'), user.id)
-      const docSnap = await getDoc(docRef)
-      if (docSnap.exists()) {
-        const collections = docSnap.data().flashcards || []
-        setFlashcards(collections)
-      } else {
-        await setDoc(docRef, { flashcards: [] })
+      if (!isLoaded || !isSignedIn || !user) return;
+      const userId = user.id;
+      const docRef = doc(collection(db, 'users'), userId);
+      try {
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const collections = docSnap.data().flashcards || [];
+          setFlashcards(collections);
+        } else {
+          await setDoc(docRef, { flashcards: [] });
+        }
+      } catch (error) {
+        console.error("Error fetching flashcards:", error);
       }
     }
-    getFlashcards()
-  }, [user])
+    getFlashcards();
+  }, [isLoaded, isSignedIn, user]);
 
   const handleSubmit = async () => {
     if (!text.trim()) {
