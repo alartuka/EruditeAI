@@ -17,7 +17,7 @@ retention of the information through these flashcards.
 
 Both front and back of each flashcard should be one sentence long.
 
-You should return in the following JSON format:
+You should return in the following JSON format and avoid including anything else:
 {
   "flashcards":[
     {
@@ -44,6 +44,7 @@ export async function POST(req) {
     // create a chat completion request to the API
     const completion = await openai.chat.completions.create({
         model:"gpt-4o-mini",
+        // model: "meta-llama/llama-3.1-8b-instruct:free",
         messages: [
             { role: 'system', content: systemPrompt }, // instructs the AI on how to create flashcards
             { role: 'user', content: data },
@@ -51,11 +52,11 @@ export async function POST(req) {
         response_format: { type: 'json_object' }, // ensure JSON response is received
     }); 
 
-    console.log('API Response:', completion)
+    
 
     // Parse the JSON response from the OpenAI API
     const flashcards = JSON.parse(completion.choices[0].message.content)
-
+    console.log('API Response:', flashcards)
     // Return the flashcards back to the client as a JSON response
     return NextResponse.json(flashcards.flashcards)
 

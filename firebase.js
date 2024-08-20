@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
  apiKey: process.env.FB_API_KEY,
@@ -12,4 +12,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export default db;
+export default { db };
