@@ -1,9 +1,11 @@
-import React from 'react'
-import { Container, Box, Typography, AppBar, Toolbar, Button } from '@mui/material'
-import { SignIn } from '@clerk/nextjs'
-import Link from 'next/link'
+"use client";
 
-export default function SignInPage() {
+import React from 'react';
+import { Container, Box, Typography, AppBar, Toolbar, Button } from '@mui/material';
+import { SignUp } from '@clerk/nextjs';
+import Link from 'next/link';
+
+export default function SignUpPage() {
   return (
     <>
       <AppBar position="static" sx={{backgroundColor: '#3f51b5'}}>
@@ -11,8 +13,8 @@ export default function SignInPage() {
           <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
             Flashcard SaaS
           </Typography>
-          <Button color="inherit" component={Link} href="/sign-up">
-            Sign Up
+          <Button color="inherit" component={Link} href="/sign-in">
+            Sign In
           </Button>
         </Toolbar>
       </AppBar>
@@ -26,11 +28,15 @@ export default function SignInPage() {
           sx={{textAlign: 'center', my: 4}}
         >
           <Typography variant="h4" component="h1" gutterBottom>
-            Sign In
+            Sign Up
           </Typography>
-          <SignIn />
+          <SignUp 
+            path="/sign-up" 
+            routing="path" 
+            signInUrl="/sign-in" 
+          />
         </Box>
       </Container>
     </>
-  )
+  );
 }
