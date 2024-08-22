@@ -5,7 +5,7 @@ const clerk = clerkClient();
 
 export default authMiddleware({
   publicRoutes: ["/", "/sign-in", "/sign-up", "/generate", "/api/generate"]
-
+  
 });
 
 

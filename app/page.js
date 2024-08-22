@@ -21,13 +21,11 @@ export default function Home() {
             EruditeSpark AI
           </Typography>
           
-
-
           <SignedOut>
             <Button color="inherit" href="/sign-in">Log In</Button>
-            
             <Button color="inherit" href="/sign-up">Sign Up</Button>
           </SignedOut>
+
           <SignedIn>
             <UserButton />
           </SignedIn>
@@ -42,11 +40,20 @@ export default function Home() {
 
         <Typography variant="h5" component="h2" gutterBottom>
            The easiest way to create flashcards from your text.
-         </Typography>
+        </Typography>
 
-         <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
-           Get Started
-        </Button>
+        <SignedIn>
+          {/* !! should be a dashboard page allowing users to retrieve saved sets with an option to add new(which takes users to this generate/page.js) !!*/}
+          <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
+            Generate flashcards
+          </Button>
+        </SignedIn>
+
+        <SignedOut>
+          <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/sign-up">
+            Get Started
+          </Button>
+        </SignedOut>
 
         <Button variant="outlined" color="primary" sx={{mt: 2}}>
            Learn More
