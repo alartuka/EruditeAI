@@ -1,226 +1,7 @@
+
 // "use client";
 
-// import { useState, useEffect } from 'react';
-// import { useUser } from '@clerk/nextjs';
-// import { Container, TextField, Button, Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid, Card, CardContent } from '@mui/material';
-// import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
-// import { db } from '../../firebase'; // Adjust the path as necessary
-
-
-// export default function Generate() {
-//   const [text, setText] = useState('')
-//   const [flashcards, setFlashcards] = useState([])
-//   const [setName, setSetName] = useState('')
-//   const [dialogOpen, setDialogOpen] = useState(false)
-//   const handleOpenDialog = () => setDialogOpen(true)
-//   const handleCloseDialog = () => setDialogOpen(false)
-//   const { isLoaded, isSignedIn, user } = useUser();
-
-
-//   useEffect(() => {
-//     async function getFlashcards() {
-//       if (!isLoaded || !isSignedIn || !user) return;
-//       const userId = user.id;
-//       const docRef = doc(collection(db, 'users'), userId);
-//       try {
-//         const docSnap = await getDoc(docRef);
-//         if (docSnap.exists()) {
-//           const collections = docSnap.data().flashcards || [];
-//           setFlashcards(collections);
-//         } else {
-//           await setDoc(docRef, { flashcards: [] });
-//         }
-//       } catch (error) {
-//         console.error("Error fetching flashcards:", error);
-//       }
-//     }
-//     getFlashcards();
-//   }, [isLoaded, isSignedIn, user]);
-
-//   const handleSave = async () => {
-//     if (!isSignedIn) {
-//       alert('Please sign in to save flashcards');
-//       return;
-//     }
-  
-//     try {
-//       const userDocRef = doc(collection(db, 'users'), user.id);
-//       const flashcardSetRef = doc(collection(userDocRef, 'flashcardSets'), new Date().toISOString());
-//       await setDoc(flashcardSetRef, { flashcards });
-//       alert('Flashcards saved successfully!');
-//     } catch (error) {
-//       console.error('Error saving flashcards:', error);
-//       alert('An error occurred while saving flashcards. Please try again.');
-//     }
-//   };
-  
-//   const handleDelete = () => {
-//     setFlashcards([]);
-//   };
-
-
-//   const handleSubmit = async () => {
-//     if (!text.trim()) {
-//       alert('Please enter some text to generate flashcards.')
-//       return
-//     }
-  
-//     try {
-//       const response = await fetch('/api/generate', {
-//         method: 'POST',
-//         body: text,
-//       })
-  
-//       if (!response.ok) {
-//         throw new Error('Failed to generate flashcards')
-//       }
-  
-//       const data = await response.json()
-//       setFlashcards(data)
-//     } catch (error) {
-//       console.error('Error generating flashcards:', error)
-//       alert('An error occurred while generating flashcards. Please try again.')
-//     }
-//   }
-//   const handleCardClick = (id) => {
-//     router.push(`/flashcard?id=${id}`)
-//   }
-
-//   const saveFlashcards = async () => {
-//     if (!setName.trim()) {
-//       alert('Please enter a name for your flashcard set.')
-//       return
-//     }
-  
-//     try {
-//       const userDocRef = doc(collection(db, 'users'), user.id)
-//       const userDocSnap = await getDoc(userDocRef)
-  
-//       const batch = writeBatch(db)
-  
-//       if (userDocSnap.exists()) {
-//         const userData = userDocSnap.data()
-//         const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
-//         batch.update(userDocRef, { flashcardSets: updatedSets })
-//       } else {
-//         batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
-//       }
-  
-//       const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
-//       batch.set(setDocRef, { flashcards })
-  
-//       await batch.commit()
-  
-//       alert('Flashcards saved successfully!')
-//       handleCloseDialog()
-//       setSetName('')
-//     } catch (error) {
-//       console.error('Error saving flashcards:', error)
-//       alert('An error occurred while saving flashcards. Please try again.')
-//     }
-//   }
-
-//   {flashcards.length > 0 && (
-//     <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-//       <Button variant="contained" color="primary" onClick={handleOpenDialog}>
-//         Save Flashcards
-//       </Button>
-//     </Box>
-//   )}
-//   <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-//   <DialogTitle>Save Flashcard Set</DialogTitle>
-//   <DialogContent>
-//     <DialogContentText>
-//       Please enter a name for your flashcard set.
-//     </DialogContentText>
-//     <TextField
-//       autoFocus
-//       margin="dense"
-//       label="Set Name"
-//       type="text"
-//       fullWidth
-//       value={setName}
-//       onChange={(e) => setSetName(e.target.value)}
-//     />
-//   </DialogContent>
-//   <DialogActions>
-//     <Button onClick={handleCloseDialog}>Cancel</Button>
-//     <Button onClick={saveFlashcards} color="primary">
-//       Save
-//     </Button>
-//   </DialogActions>
-// </Dialog>
-//   return (
-//       <Container maxWidth="md">
-//         <Box sx={{ my: 4 }}>
-//           <Typography variant="h4" component="h1" gutterBottom>
-//             Generate Flashcards
-//           </Typography>
-//           <TextField
-//             value={text}
-//             onChange={(e) => setText(e.target.value)}
-//             label="Enter text"
-//             fullWidth
-//             multiline
-//             rows={4}
-//             variant="outlined"
-//             sx={{ mb: 2 }}
-//           />
-//           <Button
-//             variant="contained"
-//             color="primary"
-//             onClick={handleSubmit}
-//             fullWidth
-//           >
-//             Generate Flashcards
-//           </Button>
-//         </Box>
-        
-//         {flashcards.length > 0 && (
-//           <Box sx={{ mt: 4 }}>
-//             <Typography variant="h5" component="h2" gutterBottom>
-//               Generated Flashcards
-//             </Typography>
-//             <Grid container spacing={2}>
-//               {flashcards.map((flashcard, index) => (
-//                 <Grid item xs={12} sm={6} md={4} key={index}>
-//                   <Card>
-//                     <CardContent>
-//                       <Typography variant="h6">Front:</Typography>
-//                       <Typography>{flashcard.front}</Typography>
-//                       <Typography variant="h6" sx={{ mt: 2 }}>Back:</Typography>
-//                       <Typography>{flashcard.back}</Typography>
-//                     </CardContent>
-//                   </Card>
-//                 </Grid>
-//               ))}
-//             </Grid>
-//             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-//               <Button
-//                 variant="contained"
-//                 color="primary"
-//                 onClick={handleSave}
-//                 disabled={!isSignedIn}
-//               >
-//                 Save Flashcards
-//               </Button>
-//               <Button
-//                 variant="contained"
-//                 color="secondary"
-//                 onClick={handleDelete}
-//               >
-//                 Delete Flashcards
-//               </Button>
-//             </Box>
-//           </Box>
-//         )}
-//       </Container>
-//   )
-// }
-// "use client";
-
-// import { useState, useEffect } from 'react';
-// import { useUser } from '@clerk/nextjs';
+// import { useState, useEffect} from 'react';
 // import { 
 //   Container, 
 //   TextField, 
@@ -230,148 +11,108 @@
 //   Grid, 
 //   Card, 
 //   CardContent,
+//   CardActionArea,
 //   Dialog,
 //   DialogTitle,
 //   DialogContent,
 //   DialogContentText,
 //   DialogActions
 // } from '@mui/material';
-// import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
+// import { collection, doc, setDoc } from 'firebase/firestore';
 // import { db } from '../../firebase'; // Adjust the path as necessary
+// import '../flashcardStyles.css'; // Add this line for the CSS styles
 
 // export default function Generate() {
+//   //const [isLoaded, isSignedIn,user] = useUser();//new add 08/23
+
 //   const [text, setText] = useState('');
 //   const [flashcards, setFlashcards] = useState([]);
 //   const [dialogOpen, setDialogOpen] = useState(false);
 //   const [setName, setSetName] = useState('');
-//   const { isLoaded, isSignedIn, user } = useUser();
+//   const [savedSets, setSavedSets] = useState([]);
+//   const [showSavedCards, setShowSavedCards] = useState(false);
+//   const [flippedCards, setFlippedCards] = useState([]); // Track the flipped state of each card
+//   //const router = useRouter();//new add 08/23
+
 
 //   useEffect(() => {
-//     async function getFlashcards() {
-//       if (!isLoaded || !isSignedIn || !user) return;
-//       const userId = user.id;
-//       const docRef = doc(collection(db, 'users'), userId);
-//       try {
-//         const docSnap = await getDoc(docRef);
-//         if (docSnap.exists()) {
-//           const collections = docSnap.data().flashcards || [];
-//           setFlashcards(collections);
-//         } else {
-//           await setDoc(docRef, { flashcards: [] });
-//         }
-//       } catch (error) {
-//         console.error("Error fetching flashcards:", error);
-//       }
+//     fetchSavedSets();
+//   }, []);
+
+//   const fetchSavedSets = async () => {
+//     try {
+//       const querySnapshot = await getDocs(collection(db, 'flashcardSets'));
+//       const sets = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+//       setSavedSets(sets);
+//     } catch (error) {
+//       console.error('Error fetching saved sets:', error);
 //     }
-//     getFlashcards();
-//   }, [isLoaded, isSignedIn, user]);
+//   };
 
-  
-
-//   const handleSubmit = async () => {
+//   const handleGenerateFlashcards = async () => {
 //     if (!text.trim()) {
-//       alert('Please enter some text to generate flashcards.')
-//       return
+//       alert('Please enter some text to generate flashcards.');
+//       return;
 //     }
-  
+
 //     try {
 //       const response = await fetch('/api/generate', {
 //         method: 'POST',
-//         body: text,
-//       })
-  
+//         body: JSON.stringify({ text }),
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       });
+
 //       if (!response.ok) {
-//         throw new Error('Failed to generate flashcards')
+//         throw new Error('Failed to generate flashcards');
 //       }
-  
-//       const data = await response.json()
-//       setFlashcards(data)
+
+//       const data = await response.json();
+//       setFlashcards(data);
+//       setFlippedCards(new Array(data.length).fill(false)); // Initialize all cards as not flipped
 //     } catch (error) {
-//       console.error('Error generating flashcards:', error)
-//       alert('An error occurred while generating flashcards. Please try again.')
+//       console.error('Error generating flashcards:', error);
+//       alert('An error occurred while generating flashcards. Please try again.');
 //     }
-//   }
+//   };
+
+//   const handleCardClick = (index) => {
+//     setFlippedCards(flippedCards.map((flipped, i) => i === index ? !flipped : flipped));
+//   };
 
 //   const handleOpenDialog = () => {
-//     // if (!isSignedIn) {
-//     //   alert('Please sign in to save flashcards');
-//     //   return;
-//     // }
-//     console.log("Opening dialog");
 //     setDialogOpen(true);
-//     setDialogOpen(true);
-//   }
-
+//   };
 
 //   const handleCloseDialog = () => {
-//     console.log("Closing dialog");
 //     setDialogOpen(false);
 //     setSetName('');
 //   };
 
-  
+//   const handleDelete = () => {
+//     setFlashcards([]);
+//   };
 
 //   const handleSaveButtonClick = () => {
-//     console.log("Save button clicked");
 //     if (!setName.trim()) {
-//       console.log("Set name is empty");
 //       alert('Please enter a name for your flashcard set.');
 //       return;
 //     }
-//     console.log("Proceeding to save flashcards");
 //     saveFlashcardsToDatabase(setName, flashcards);
 //   };
 
 //   const saveFlashcardsToDatabase = async (name, cards) => {
-//     console.log('Attempting to save flashcards:', name, cards);
 //     try {
-//       if (!db) {
-//         console.error('Firestore database instance is undefined');
-//         alert('Database connection error. Please try again later.');
-//         return;
-//       }
 //       const flashcardSetRef = doc(collection(db, 'flashcardSets'), name);
 //       await setDoc(flashcardSetRef, { flashcards: cards });
-//       console.log('Flashcards saved successfully!');
 //       alert('Flashcards saved successfully!');
 //       handleCloseDialog();
+//       fetchSavedSets(); // Refresh the saved sets
 //     } catch (error) {
 //       console.error('Error saving flashcards:', error);
 //       alert('An error occurred while saving flashcards. Please try again.');
 //     }
-//   };
-
-//   const saveFlashcards = async () => {
-//     if (!setName.trim()) {
-//       alert('Please enter a name for your flashcard set.');
-//       return;
-//     }
-
-//     try {
-//       // Save directly to the root of the database
-//       const flashcardSetRef = doc(collection(db, 'flashcardSets'), setName);
-//       await setDoc(flashcardSetRef, { flashcards });
-//       alert('Flashcards saved successfully!');
-//       handleCloseDialog();
-//     } catch (error) {
-//       console.error('Error saving flashcards:', error);
-//       alert('An error occurred while saving flashcards. Please try again.');
-//     }
-//   };
-  //   try {
-  //     const userDocRef = doc(collection(db, 'users'), user.id);
-  //     const flashcardSetRef = doc(collection(userDocRef, 'flashcardSets'), setName);
-  //     await setDoc(flashcardSetRef, { flashcards });
-  //     alert('Flashcards saved successfully!');
-  //     handleCloseDialog();
-  //   } catch (error) {
-  //     console.error('Error saving flashcards:', error);
-  //     alert('An error occurred while saving flashcards. Please try again.');
-  //   }
-  // };
-
-//   const handleDelete = () => {
-//     setFlashcards([]);
 //   };
 
 //   return (
@@ -393,13 +134,22 @@
 //         <Button
 //           variant="contained"
 //           color="primary"
-//           onClick={handleSubmit}
+//           onClick={handleGenerateFlashcards}
 //           fullWidth
 //         >
 //           Generate Flashcards
 //         </Button>
+
+//         <Button
+//           variant="contained"
+//           color="secondary"
+//           onClick={() => setShowSavedCards(!showSavedCards)}
+//         >
+//           {showSavedCards ? 'Hide Saved Flashcards' : 'Show Saved Flashcards'}
+//         </Button>
 //       </Box>
       
+
 //       {flashcards.length > 0 && (
 //         <Box sx={{ mt: 4 }}>
 //           <Typography variant="h5" component="h2" gutterBottom>
@@ -408,18 +158,24 @@
 //           <Grid container spacing={2}>
 //             {flashcards.map((flashcard, index) => (
 //               <Grid item xs={12} sm={6} md={4} key={index}>
-//                 <Card>
-//                   <CardContent>
-//                     <Typography variant="h6">Front:</Typography>
-//                     <Typography>{flashcard.front}</Typography>
-//                     <Typography variant="h6" sx={{ mt: 2 }}>Back:</Typography>
-//                     <Typography>{flashcard.back}</Typography>
-//                   </CardContent>
+//                 <Card className={`flashcard ${flippedCards[index] ? 'flipped' : ''}`} onClick={() => handleCardClick(index)}>
+//                 <CardActionArea onClick={() => handleCardClick(index)}>
+                     
+//                     <CardContent className="flashcard-inner">
+//                       <div className="flashcard-front">
+//                         <Typography>{flashcard.front}</Typography>
+//                       </div>
+//                       <div className="flashcard-back">
+//                         <Typography>{flashcard.back}</Typography>
+//                       </div>
+//                     </CardContent>
+                  
+//                   </CardActionArea>
 //                 </Card>
 //               </Grid>
 //             ))}
 //           </Grid>
-//           <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
+//           <Box sx={{ mt: 2 }}>
 //             <Button
 //               variant="contained"
 //               color="primary"
@@ -465,9 +221,10 @@
 //   );
 // }
 
+
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import { 
   Container, 
   TextField, 
@@ -484,27 +241,41 @@ import {
   DialogContentText,
   DialogActions
 } from '@mui/material';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, setDoc, writeBatch, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase'; // Adjust the path as necessary
 import '../flashcardStyles.css'; // Add this line for the CSS styles
+import {useUser} from '@clerk/nextjs';//new add 08/23
+import {useRouter} from 'next/navigation';//new add 08/23
 
 export default function Generate() {
+  const {isLoaded, isSignedIn,user} = useUser();//new add 08/23
+  const router = useRouter();//new add 08/23
+
   const [text, setText] = useState('');
   const [flashcards, setFlashcards] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [setName, setSetName] = useState('');
   const [savedSets, setSavedSets] = useState([]);
   const [showSavedCards, setShowSavedCards] = useState(false);
   const [flippedCards, setFlippedCards] = useState([]); // Track the flipped state of each card
 
 
+  // useEffect(() => {
+  //   fetchSavedSets();
+  // }, []);
   useEffect(() => {
-    fetchSavedSets();
-  }, []);
+    if (isLoaded && isSignedIn) {
+      fetchSavedSets();
+    }
+  }, [isLoaded, isSignedIn, user]);
 
   const fetchSavedSets = async () => {
+    if (!user) return;
+
     try {
-      const querySnapshot = await getDocs(collection(db, 'flashcardSets'));
+      const userSetsRef = collection(db, 'users', user.id, 'flashcardSets');
+      const querySnapshot = await getDocs(userSetsRef);
       const sets = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setSavedSets(sets);
     } catch (error) {
@@ -512,6 +283,41 @@ export default function Generate() {
     }
   };
 
+
+  const saveFlashcards = async (replace = false) => {
+    try {
+      const userFlashcardsRef = doc(db, 'users', user.id, 'flashcardSets', setName);
+      
+      if (!replace) {
+        // Check again if the set exists (in case of race conditions)
+        const docSnap = await getDoc(userFlashcardsRef);
+        if (docSnap.exists()) {
+          alert('A set with this name was just created. Please choose a different name.');
+          return;
+        }
+      }
+
+      await setDoc(userFlashcardsRef, { flashcards: flashcards }, { merge: true });
+      
+      alert('Flashcards saved successfully!');
+      handleCloseDialog();
+      fetchSavedSets();
+      setSetName('');
+    } catch (error) {
+      console.error('Error saving flashcards:', error);
+      alert('An error occurred while saving flashcards. Please try again.');
+    }
+  };
+
+  const handleConfirmReplace = () => {
+    setConfirmDialogOpen(false);
+    saveFlashcards(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDialogOpen(false);
+  };
+  
   const handleGenerateFlashcards = async () => {
     if (!text.trim()) {
       alert('Please enter some text to generate flashcards.');
@@ -557,26 +363,74 @@ export default function Generate() {
     setFlashcards([]);
   };
 
+
   const handleSaveButtonClick = () => {
+    if (!isSignedIn || !user) {
+      alert('Please sign in to save flashcards.');
+      return;
+    }
     if (!setName.trim()) {
       alert('Please enter a name for your flashcard set.');
       return;
     }
-    saveFlashcardsToDatabase(setName, flashcards);
-  };
-
-  const saveFlashcardsToDatabase = async (name, cards) => {
-    try {
-      const flashcardSetRef = doc(collection(db, 'flashcardSets'), name);
-      await setDoc(flashcardSetRef, { flashcards: cards });
-      alert('Flashcards saved successfully!');
-      handleCloseDialog();
-      fetchSavedSets(); // Refresh the saved sets
-    } catch (error) {
-      console.error('Error saving flashcards:', error);
-      alert('An error occurred while saving flashcards. Please try again.');
+    //saveFlashcardsToDatabase(setName, flashcards);
+    const existingSet = savedSets.find(set => set.id === setName);
+    if (existingSet) {
+      setConfirmDialogOpen(true);
+    } else {
+      saveFlashcards();
     }
   };
+
+  // const handleSubmit = async () => {
+  //   if (!text.trim()) {
+  //     alert('Please enter some text to generate flashcards.')
+  //     return
+  //   }
+  
+  //   try {
+  //     setGenerating(true)
+  //     const response = await fetch('/api/generate', {
+  //       method: 'POST',
+  //       body: text,
+  //     })
+  
+  //     if (!response.ok) {
+  //       throw new Error('Failed to generate flashcards')
+  //     }
+  
+  //     const data = await response.json()
+  //     setFlashcards(data)
+  //     setGenerating(false)
+  //   } catch (error) {
+  //     console.error('Error generating flashcards:', error)
+  //     alert('An error occurred while generating flashcards. Please try again.')
+  //   }
+  // }
+
+  // const fetchSavedSets = async () => {
+  //   try {
+  //     const querySnapshot = await getDocs(collection(db, 'flashcardSets'));
+  //     const sets = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  //     setSavedSets(sets);
+  //   } catch (error) {
+  //     console.error('Error fetching saved sets:', error);
+  //   }
+  // };
+
+
+  // const saveFlashcardsToDatabase = async (name, cards) => {
+  //   try {
+  //     const flashcardSetRef = doc(collection(db, 'flashcardSets'), name);
+  //     await setDoc(flashcardSetRef, { flashcards: cards });
+  //     alert('Flashcards saved successfully!');
+  //     handleCloseDialog();
+  //     fetchSavedSets(); // Refresh the saved sets
+  //   } catch (error) {
+  //     console.error('Error saving flashcards:', error);
+  //     alert('An error occurred while saving flashcards. Please try again.');
+  //   }
+  // };
 
   return (
     <Container maxWidth="md">
@@ -675,11 +529,29 @@ export default function Generate() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleSaveButtonClick} color="primary">
+          {/* <Button onClick={handleSaveButtonClick} color="primary"> */}
+          {/* <Button onClick={saveFlashcards} color="primary"> */}
+          <Button onClick={handleSaveButtonClick} color="primary">  
             Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmDialog}>
+        <DialogTitle>Confirm Replace</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            A flashcard set with the name "{setName}" already exists. Do you want to replace it?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDialog}>Cancel</Button>
+          <Button onClick={handleConfirmReplace} color="primary">
+            Replace
           </Button>
         </DialogActions>
       </Dialog>
     </Container>
   );
 }
+
