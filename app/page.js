@@ -8,6 +8,31 @@ import Link from 'next/link';
 
 
 export default function Home() {
+  // ===== STRIPE INTEGRATION =====
+  const handleSubmit = async() => {
+    const checkoutSession = await fetch('/api/checkout_session', {
+      method: 'POST',
+      headers: {
+        origin: 'http://localhost:3000',
+      },
+    })
+    const checkoutSessionJson = await checkoutSession.json()
+    
+    if (checkoutSession.statusCode === 500) {
+      console.error(checkoutSession.message)
+      return
+    }
+
+    const stripe = await getStripe()
+    const {error} = await stripe.redirectToCheckout({
+      sessionId: checkoutSessionJson.id,
+    })
+
+    if (error) {
+      console.warn(error.message)
+    }
+  }
+
   return (
     <Container maxWidth="100vw">
      {/* ===== HERO SECTION ===== */}
@@ -77,6 +102,7 @@ export default function Home() {
               <Button variant="contained" color="primary" sx={{mt:2}}>Choose Free</Button>
               </Box>
             </Grid>
+
             <Grid item xs={12} sm={4}>
             <Box sx={{p: 2, borderRadius: 2, border: '1px solid #ccc'}}>
               <Typography variant="h5" component="h3" gutterBottom>Basic</Typography>
@@ -96,11 +122,15 @@ export default function Home() {
                 {''}
                 Access to unlimted flashcard features and storage, with priority support.
               </Typography>
-              <Button variant="contained" color="primary" sx={{mt:2}}>Choose Pro</Button>
+              <Button variant="contained" color="primary" sx={{mt:2}} onClick={handleSubmit}>Choose Pro</Button>
               </Box>
             </Grid>
            </Grid>
          </Box>
+
+        <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} p={4} mb={'15px'}>
+          <Typography variant="p" color='#1d245c' component="p">&copy; {new Date().getFullYear()} ErutditeSpark AI. All rights reserved.</Typography>
+        </Box>
     </Container>
   )
 }
