@@ -6,7 +6,6 @@ import { Container, TextField, Button, Typography, Box, Dialog, DialogTitle, Dia
 import { collection, doc, getDoc, setDoc, WriteBatch, writeBatch } from 'firebase/firestore';
 import { db } from '../../firebase'; // Adjust the path as necessary
 import { useRouter } from 'next/navigation';
-// import ReactCardFlip from 'react-card-flip';
 
 
 export default function Generate() {
@@ -95,13 +94,12 @@ export default function Generate() {
       const batch = writeBatch(db)
       console.log('Batch initialized');
 
-      // const userDocRef = doc(collection(db, 'users'), user.id)
+      // Fetch user document from Firestore
       const userDocRef = doc(db, 'users', user.id)
       const userDocSnap = await getDoc(userDocRef)
   
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data().flashcards || [] 
-        // const updatedSets = [...(userData.flashcardSets || []), { name: name }]
         console.log('User document found', userData);
 
         if (userData.some((f) => f.name === name)) {
@@ -114,7 +112,6 @@ export default function Generate() {
           console.log('Flashcard set added to batch');
         }
 
-      //   batch.update(userDocRef, { flashcardSets: updatedSets })
       } else {
         batch.set(userDocRef, { flashcards: [{ name }]}, {merge: true})
         console.log('New flashcard set created');
@@ -131,7 +128,7 @@ export default function Generate() {
       console.log('Batch committed successfully');
 
       alert('Flashcards saved successfully!')
-      
+
       handleClose()
       router.push('/flashcards')
       setName('')
@@ -145,7 +142,6 @@ export default function Generate() {
 
   return (
     <Container maxWidth="md">
-
       {/* ==== TOPIC OR TEXT BOX FOR FLASHCARDS ==== */}
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
@@ -231,7 +227,7 @@ export default function Generate() {
                               transform: 'rotateY(180deg)',
                             }}
                           >
-                            <Typography variant="h5" component="div">
+                            <Typography variant="body1" component="div">
                               {flashcard.back}
                             </Typography>
                           </Box>
@@ -240,69 +236,6 @@ export default function Generate() {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-
-
-                {/* <ReactCardFlip isFlipped={flipped[index]} flipDirection='vertical' key={index}>
-                <Box onClick={handleCardClick({index})}>
-                  <Typography variant="h5" component="div">
-                    {flashcard.front}
-                  </Typography>
-                </Box>
-                <Box onClick={handleCardClick({index})}>
-                  <Typography variant="h5" component="div">
-                    {flashcard.back}
-                  </Typography>
-                </Box>
-                </ReactCardFlip> */}
-
-                {/* <Card>
-                  <CardActionArea onClick={() => {handleCardClick({index})}}>
-                    <CardContent>
-                      <Box sx={{
-                        perspective: '1000px',
-                        '& > div': {
-                          transition: 'transform 0.6s',
-                          transformStyle: 'preserve-3d',
-                          position: ' relative',
-                          width: '100%',
-                          height: '200px',
-                          boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-                          transform: flipped[index]
-                            ? 'rotateY(180deg)' 
-                            : 'rotateY(0deg)',
-                        }, 
-                        '& > div > div': {
-                          position: 'absolute',
-                          width: '100%',
-                          height: '100%',
-                          backfaceVisibility: 'hidden',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          padding: 2,
-                          boxSizing: 'border-box',
-                        }, 
-                        '& > div > div:nth-of-type(2)': {
-                          transform: 'rotateY(180deg)' 
-                        }
-                      }}>
-                      <div>
-                        <div key="front">
-                          <Typography variant="h5" component="div">
-                            {flashcard.front}
-                          </Typography>
-                        </div>
-
-                        <div key="back">
-                          <Typography variant="h5" component="div">
-                            {flashcard.back}
-                          </Typography>
-                        </div>
-                      </div>
-                      </Box>
-                    </CardContent>
-                  </CardActionArea>
-                </Card> */}
               </Grid>
             ))}
           </Grid>
