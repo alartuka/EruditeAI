@@ -5,7 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { Container, Typography, Grid } from '@mui/material';
-import Flashcard from '../components/Flashcard';
+import Flashcard from '../flashcard';
 
 export default function SavedCards() {
   const [savedSets, setSavedSets] = useState([]);

@@ -2,36 +2,43 @@
 import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import { Container, Grid, Card, CardActionArea, CardContent, Typography } from '@mui/material'
+import { Container, Grid, Card, CardActionArea, CardContent, Typography, CircularProgress } from '@mui/material'
 import { doc, getDoc, setDoc, collection } from 'firebase/firestore'
-import db from '../../firebase'
+import { db } from '../../firebase'
 
-export default function Flashcard() {
+export default function Flashcards() {
     const { isLoaded, isSignedIn, user } = useUser()
     const [flashcards, setFlashcards] = useState([])
     const router = useRouter()
+
     const handleCardClick = (id) => {
       router.push(`/flashcard?id=${id}`)
     }
   
-    // ... (rest of the component)
     useEffect(() => {
       async function getFlashcards() {
         if (!user) return
+
         const docRef = doc(collection(db, 'users'), user.id)
         const docSnap = await getDoc(docRef)
+
         if (docSnap.exists()) {
           const collections = docSnap.data().flashcards || []
           setFlashcards(collections)
+
         } else {
           await setDoc(docRef, { flashcards: [] })
         }
       }
-      getFlashcards()
+      getFlashcards() 
     }, [user])
+
+    if (!isLoaded || !isSignedIn) {
+      return <CircularProgress />
+    }
   
     return (
-      <Container maxWidth="md">
+      <Container maxWidth="100vw">
         <Grid container spacing={3} sx={{ mt: 4 }}>
           {flashcards.map((flashcard, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
