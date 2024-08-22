@@ -5,7 +5,7 @@ const systemPrompt = `
 You are a flashcard creator, you take in text and create multiple flashcards from it. 
 
 Use simple language to make the flashcards accessible to a wide range of learners.
-Include a variety of question types, such as definitions, examples, comparisons, and applications.
+Include a variety of question types, such as definitions, examples, multiple choice, case scenarios, comparisons, and applications.
 Avoid overly complex or ambiguous phrasing in both questions and answers.
 When appropriate, use mnemonics or memory aids to help reinforce the information.
 Tailor the difficulty level of the flashcards to the user's specified preferences.
@@ -28,15 +28,16 @@ You should return in the following JSON format:
 }
 `
 
-const openai = new OpenAI({
-    baseURL: process.env.OPENROUTER_API_URL,
-    apiKey: process.env.OPENROUTER_API_KEY,
-  });
+// const openai = new OpenAI({
+//     baseURL: process.env.OPENROUTER_API_URL,
+//     apiKey: process.env.OPENROUTER_API_KEY,
+//   });
 
 export async function POST(req) {
     const openai = new OpenAI({
-        baseURL: process.env.OPENROUTER_API_URL,
-        apiKey: process.env.OPENROUTER_API_KEY,
+       baseURL: process.env.OPENROUTER_API_URL,
+       apiKey: process.env.OPENROUTER_API_KEY,
+        // apiKey:process.env.OPENAI_API_KEY
     });  
 
     const data = await req.text()
@@ -57,6 +58,7 @@ export async function POST(req) {
     const flashcards = JSON.parse(completion.choices[0].message.content)
 
     // Return the flashcards back to the client as a JSON response
+    //return NextResponse.json(flashcards.flashcards)
     return NextResponse.json(flashcards.flashcards)
 
   }

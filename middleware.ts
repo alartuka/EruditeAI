@@ -1,5 +1,6 @@
 import { authMiddleware } from "@clerk/nextjs/server";
 import { clerkClient } from '@clerk/nextjs/server';
+import { clerkMiddleware} from "@clerk/nextjs/server";
 const clerk = clerkClient();
 
 export default authMiddleware({
