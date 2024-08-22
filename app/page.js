@@ -19,25 +19,13 @@ export default function Home() {
             EruditeSpark AI
           </Typography>
           
-        <SignedOut>
-          <Button color="inherit">
-              <Link href="/sign-in" passHref>
-              Log In
-              </Link>
-          </Button>
-          <Button color="inherit">
-            <Link href="/sign-up" passHref>
-            Sign Up
-            </Link>
-          </Button>
-        </SignedOut>
 
 
-          {/* <SignedOut>
-            <Button color="inherit">Log In</Button>
+          <SignedOut>
+            <Button color="inherit" href="/sign-in">Log In</Button>
             
-            <Button color="inherit">Sign Up</Button>
-          </SignedOut> */}
+            <Button color="inherit" href="/sign-up">Sign Up</Button>
+          </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>

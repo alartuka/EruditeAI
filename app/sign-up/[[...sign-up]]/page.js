@@ -11,7 +11,7 @@ export default function SignUpPage() {
       <AppBar position="static" sx={{backgroundColor: '#3f51b5'}}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-            Flashcard SaaS
+            EruditeSpark AI
           </Typography>
           <Button color="inherit" component={Link} href="/sign-in">
             Sign In
@@ -19,7 +19,7 @@ export default function SignUpPage() {
         </Toolbar>
       </AppBar>
       
-      <Container maxWidth="sm">
+      <Container maxWidth="100vw">
         <Box
           display="flex"
           flexDirection="column"

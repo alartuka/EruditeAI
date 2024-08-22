@@ -6,24 +6,29 @@ import { SignIn } from '@clerk/nextjs';
 import Link from 'next/link';
 
 export default function SignUpPage() {
-  return <Container maxWidth="sm">
+  return (<Container maxWidth="100vw">
     <AppBar position="static" sx={{backgroundColor: '#3f51b5'}}>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
           ERUDITESPARK AI
         </Typography>
-        {/* <Button color="inherit" component={Link} href="/sign-in"> */}
-        <Button color="inherit">
+        
+            <Button color="inherit" component={Link} href="/sign-in">Log In</Button>
+            
+            <Button color="inherit" component={Link} href="/sign-up">Sign Up</Button>
+          
+     
+        {/* <Button color="inherit">
           <Link href="/sign-in" passHref>
           Log In
           </Link>
-        </Button>
-        {/* <Button color="inherit" component={Link} href="/sign-up"> */}
-        <Button color="inherit">
+        </Button> */}
+  
+        {/* <Button color="inherit">
           <Link href="/sign-up" passHref>
           Sign Up
           </Link>
-        </Button>
+        </Button> */}
       </Toolbar>
     {/* <Box
       display="flex"
@@ -53,7 +58,7 @@ export default function SignUpPage() {
       </Typography>
       </Box>
    </Container>
-}
+)}
 
 {/* export default function SignInPage() {
   return (
