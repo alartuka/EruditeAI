@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function SignUpPage() {
   return (<Container maxWidth="100vw">
-    <AppBar position="static" sx={{backgroundColor: '#3f51b5'}}>
+    {/* <AppBar position="static" sx={{backgroundColor: '#3f51b5'}}>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
           ERUDITESPARK AI
@@ -15,7 +15,7 @@ export default function SignUpPage() {
         
             <Button color="inherit" component={Link} href="/sign-in">Log In</Button>
             
-            <Button color="inherit" component={Link} href="/sign-up">Sign Up</Button>
+            <Button color="inherit" component={Link} href="/sign-up">Sign Up</Button> */}
           
      
         {/* <Button color="inherit">
@@ -29,7 +29,7 @@ export default function SignUpPage() {
           Sign Up
           </Link>
         </Button> */}
-      </Toolbar>
+      {/* </Toolbar> */}
     {/* <Box
       display="flex"
       flexDirection="column"
@@ -46,7 +46,7 @@ export default function SignUpPage() {
         signUpUrl="/sign-up" 
       />
     </Box> */}
-    </AppBar>
+    {/* </AppBar> */}
     <Box
       display="flex"
       flexDirection="column"

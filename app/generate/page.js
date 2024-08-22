@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { Container, TextField, Button, Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid, Card, CardContent, CardActionArea } from '@mui/material';
+import { Container, TextField, Button, Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid, Card, CardContent, CardActionArea, Paper } from '@mui/material';
 import { collection, doc, getDoc, setDoc, WriteBatch, writeBatch } from 'firebase/firestore';
 import { db } from '../../firebase'; // Adjust the path as necessary
 import { useRouter } from 'next/navigation';
@@ -95,14 +95,14 @@ export default function Generate() {
       console.log('Batch initialized');
 
       // Fetch user document from Firestore
-      const userDocRef = doc(db, 'users', user.id)
+      const userDocRef = doc(collection(db, 'users'), user.id)
       const userDocSnap = await getDoc(userDocRef)
   
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data().flashcards || [] 
         console.log('User document found', userData);
 
-        if (userData.some((f) => f.name === name)) {
+        if (userData.find((f) => f.name === name)) {
           alert('A flashcard set with this name already exists.')
           return
 
@@ -113,7 +113,7 @@ export default function Generate() {
         }
 
       } else {
-        batch.set(userDocRef, { flashcards: [{ name }]}, {merge: true})
+        batch.set(userDocRef, { flashcards: [{ name }]})
         console.log('New flashcard set created');
       }
   
@@ -147,16 +147,19 @@ export default function Generate() {
         <Typography variant="h4" component="h1" gutterBottom>
           Generate Flashcards
         </Typography>
-        <TextField
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          label="Enter text"
-          fullWidth
-          multiline
-          rows={4}
-          variant="outlined"
-          sx={{ mb: 2 }}
-        />
+        <Paper sx={{ p: 4, width: '100%' }}>
+          <TextField
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            label="Enter text"
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            sx={{ mb: 2 }}
+          />
+        </Paper>
+
         <Button
           variant="contained"
           color="primary"

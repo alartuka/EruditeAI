@@ -1,37 +1,15 @@
 "use client";
 
 import { SignedIn, SignedOut, UserButton, SignUp,SignInButton  } from "@clerk/nextjs";
-import { AppBar, Box, Button, Grid, Toolbar, Typography,CardActionArea, Container } from "@mui/material";
+import { AppBar, Box, Button, Grid, Toolbar, Typography,CardActionArea, Container, Stack } from "@mui/material";
 import getStripe from "./utils/get-stripe";
 import Head from 'next/head';
 import Link from 'next/link';
 
 
 export default function Home() {
-   return (
+  return (
     <Container maxWidth="100vw">
-      <Head>
-        <title>EruditeSpark AI</title>
-        <meta name="description" content="create flashcards from your text." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" style={{flexGrow: 1}}>
-            EruditeSpark AI
-          </Typography>
-          
-          <SignedOut>
-            <Button color="inherit" href="/sign-in">Log In</Button>
-            <Button color="inherit" href="/sign-up">Sign Up</Button>
-          </SignedOut>
-
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </Toolbar>
-      </AppBar>
-
      {/* ===== HERO SECTION ===== */}
       <Box sx={{textAlign: 'center', my: 4}}>
         <Typography variant="h2" component="h1" gutterBottom>
@@ -123,7 +101,9 @@ export default function Home() {
             </Grid>
            </Grid>
          </Box>
-      </Container>)}
+    </Container>
+  )
+}
 // export default function Home() {
 //   // ===== STRIPE INTEGRATION =====
 //   const handleSubmit = async () => { // handles the Stripe checkout process when a user selects the Pro plan
