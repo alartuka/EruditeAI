@@ -25,7 +25,7 @@ export default function SignUpPage() {
           </Link>
         </Button>
       </Toolbar>
-    <Box
+    {/* <Box
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -40,7 +40,7 @@ export default function SignUpPage() {
         routing="path" 
         signUpUrl="/sign-up" 
       />
-    </Box>
+    </Box> */}
     </AppBar>
     <Box
       display="flex"
