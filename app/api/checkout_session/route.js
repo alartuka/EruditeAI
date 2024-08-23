@@ -11,6 +11,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 })
 
 export async function POST(req) {
+    const { planName, price } = await req.json()
+    // if (price === 0) {
+    //     return NextResponse.json({ url: `${req.headers.get('origin')}/result?session_id=free_plan` })
+    //   }
     try {
         // params includes all the necessary information for creating a Stripe checkout session
         const params = {
@@ -21,9 +25,9 @@ export async function POST(req) {
                     price_data: {
                         currency: 'usd',
                         product_data: {
-                            name: 'Pro subscription',
+                            name: `${planName} subscription`,
                         },
-                        unit_amount: formatAmountForStripe(10, 'usd'), // $10.00 
+                        unit_amount: formatAmountForStripe(price, 'usd'),
                         recurring: {
                             interval: 'month',
                             interval_count: 1,

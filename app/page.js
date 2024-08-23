@@ -9,12 +9,13 @@ import Link from 'next/link';
 
 export default function Home() {
   // ===== STRIPE INTEGRATION =====
-  const handleSubmit = async() => {
+  const handleSubmit = async(planName, price) => {
     const checkoutSession = await fetch('/api/checkout_session', {
       method: 'POST',
       headers: {
         origin: 'http://localhost:3000',
       },
+      body: JSON.stringify({ planName, price }),
     })
     const checkoutSessionJson = await checkoutSession.json()
     
@@ -99,7 +100,7 @@ export default function Home() {
                 Access to 20 flashcards as a trial.
               </Typography>
              
-              <Button variant="contained" color="primary" sx={{mt:2}}>Choose Free</Button>
+              <Button variant="contained" color="primary" sx={{mt:2}} onClick={() => handleSubmit('Free', 0)}>Choose Free</Button>
               </Box>
             </Grid>
 
@@ -111,7 +112,7 @@ export default function Home() {
                 {''}
                 Access to limited flashcard features and limited storage.
               </Typography>
-              <Button variant="contained" color="primary" sx={{mt:2}}>Choose Basic</Button>
+              <Button variant="contained" color="primary" sx={{mt:2}} onClick={() => handleSubmit('Basic', 5)}>Choose Basic</Button>
               </Box>
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -122,7 +123,7 @@ export default function Home() {
                 {''}
                 Access to unlimted flashcard features and storage, with priority support.
               </Typography>
-              <Button variant="contained" color="primary" sx={{mt:2}} onClick={handleSubmit}>Choose Pro</Button>
+              <Button variant="contained" color="primary" sx={{mt:2}} onClick={() => handleSubmit('Pro', 20)}>Choose Pro</Button>
               </Box>
             </Grid>
            </Grid>
