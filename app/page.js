@@ -1,15 +1,22 @@
 "use client";
 
-import { SignedIn, SignedOut, UserButton, SignUp,SignInButton  } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, SignUp,SignInButton, useAuth  } from "@clerk/nextjs";
 import { AppBar, Box, Button, Grid, Toolbar, Typography,CardActionArea, Container, Stack } from "@mui/material";
 import getStripe from "./utils/get-stripe";
 import Head from 'next/head';
 import Link from 'next/link';
+import { Toaster, toast } from 'react-hot-toast';
 
 
 export default function Home() {
+  const { isSignedIn } = useAuth();
+
   // ===== STRIPE INTEGRATION =====
   const handleSubmit = async(planName, price) => {
+    if (!isSignedIn) {
+      toast.error("Please sign in first to choose a plan.");
+      return;
+    }
     const checkoutSession = await fetch('/api/checkout_session', {
       method: 'POST',
       headers: {
@@ -36,6 +43,7 @@ export default function Home() {
 
   return (
     <Container maxWidth="100vw">
+      <Toaster position="top-center" reverseOrder={false} />
      {/* ===== HERO SECTION ===== */}
       <Box sx={{textAlign: 'center', my: 4}}>
         <Typography variant="h2" component="h1" gutterBottom>
