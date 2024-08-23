@@ -35,15 +35,16 @@ export async function POST(req) {
 
             // success and cancel URLs which are used to redirect the user after the payment process
             success_url: `${req.headers.get(
-                'Referer',
-            )}result?session_id={CHECKOUT_SESSION_ID}`,
+                'origin'
+            )}/result?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${req.headers.get(
-                'Referer',
-            )}result?session_id={CHECKOUT_SESSION_ID}`,
+                'origin'
+            )}/result?session_id={CHECKOUT_SESSION_ID}`,
         }
 
         // create the checkout session
         const checkoutSession = await stripe.checkout.sessions.create(params)
+        console.log(checkoutSession)
 
         // return the created session as a JSON response with a 200 status code
         return NextResponse.json(checkoutSession, {

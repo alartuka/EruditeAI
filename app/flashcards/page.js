@@ -34,7 +34,14 @@ export default function Flashcards() {
     }, [user])
 
     if (!isLoaded || !isSignedIn) {
-      return <CircularProgress />
+      return (
+        <Container maxWidth="sm" sx={{textAlign: 'center', mt: 4}}>
+          <CircularProgress />
+          <Typography variant="h6" sx={{mt: 2}}>
+            Loading...
+          </Typography>
+        </Container>
+      )
     }
   
     return (

@@ -129,7 +129,7 @@ export default function Home() {
          </Box>
 
         <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} p={4} mb={'15px'}>
-          <Typography variant="p" color='#1d245c' component="p">&copy; {new Date().getFullYear()} ErutditeSpark AI. All rights reserved.</Typography>
+          <Typography variant="p" color='#1d245c' component="p">&copy; {new Date().getFullYear()} EruditeSpark AI. All rights reserved.</Typography>
         </Box>
     </Container>
   )
