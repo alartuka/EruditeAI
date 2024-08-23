@@ -17,10 +17,16 @@ export default function Home() {
       toast.error("Please sign in first to choose a plan.");
       return;
     }
+    const origin = typeof window !== 'undefined' && window.location.origin 
+      ? window.location.origin 
+      : '';
+    
     const checkoutSession = await fetch('/api/checkout_session', {
       method: 'POST',
       headers: {
-        origin: 'http://localhost:3000',
+        // origin: 'http://localhost:3000',
+        'Content-Type': 'application/json',
+        'Origin': origin,
       },
       body: JSON.stringify({ planName, price }),
     })
