@@ -68,9 +68,9 @@ export default function Home() {
           </Button> {/* Deep green buttons with darker hover */}
         </SignedOut>
 
-        <Button variant="outlined" color="primary" sx={{mt: 2, color: '#004d40', borderColor: '#004d40', '&:hover': { backgroundColor: '#004d40', color: '#ffffff' } }}>
+        {/* <Button variant="outlined" color="primary" sx={{mt: 2, color: '#004d40', borderColor: '#004d40', '&:hover': { backgroundColor: '#004d40', color: '#ffffff' } }}>
            Learn More
-        </Button> {/* Deep green outlined button with hover effect */}
+        </Button> Deep green outlined button with hover effect */}
        </Box>
 
       {/* ===== FEATURES SECTION ===== */}
