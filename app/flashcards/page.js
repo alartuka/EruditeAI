@@ -111,15 +111,7 @@ export default function Flashcards() {
                 <Grid item xs={12} sm={6} md={4} key={index}>
                   <Card variant="outlined">
                     <Stack direction='row' spacing={3}>
-                      <Box sx={{ p: 1 }}>
-                        <Tooltip title="Delete Set" placement="top" arrow>
-                          <Fab color="error" aria-label="delete set" 
-                          onClick={() => {handleDeleteSet(flashcard.name)}}>
-                            <Delete />
-                          </Fab>
-                        </Tooltip>
-                      </Box>
-
+                    
                       <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
                         <CardContent>
                           <Typography variant="h5" component="div">
@@ -127,6 +119,15 @@ export default function Flashcards() {
                           </Typography>
                         </CardContent>
                       </CardActionArea>
+
+                      <Box sx={{ p: 1 }}>
+                        <Tooltip title="Delete Set" placement="top" arrow>
+                          <IconButton aria-label="delete" size="large" color="error" onClick={() => {handleDeleteSet(flashcard.name)}}>
+                            <Delete /> 
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+
                     </Stack>
                   </Card>
                 </Grid>
