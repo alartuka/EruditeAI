@@ -22,32 +22,34 @@ export default function Generate() {
   const handleClose = () => setOpen(false)
   
  
-  useEffect(() => {
-    async function getFlashcards() {
-      if (!isLoaded || !isSignedIn || !user) return;
+  // useEffect(() => {
+  //   async function getFlashcards() {
+  //     if (!isLoaded || !isSignedIn || !user) return;
       
-      const userId = user.id;
-      // const docRef = doc(collection(db, 'users'), userId);
-      const docRef = doc(db, 'users', userId);
+  //     const userId = user.id;
+  //     // const docRef = doc(collection(db, 'users'), userId);
+  //     const docRef = doc(db, 'users', userId);
       
-      try {
-        const docSnap = await getDoc(docRef);
+  //     try {
+  //       const docSnap = await getDoc(docRef);
         
-        if (docSnap.exists()) {
-          const collections = docSnap.data().flashcards || [];
-          setFlashcards(collections);
+  //       if (docSnap.exists()) {
+  //         const collections = docSnap.data().flashcards || [];
+  //         setFlashcards(collections);
+          
+  //         console.log(flashcards)
         
-        } else {
-          await setDoc(docRef, { flashcards: [] }, { merge: true });
-        }
+  //       } else {
+  //         await setDoc(docRef, { flashcards: [] }, { merge: true });
+  //       }
 
-      } catch (error) {
-        console.error("Error fetching flashcards:", error);
-      }
-    }
+  //     } catch (error) {
+  //       console.error("Error fetching flashcards:", error);
+  //     }
+  //   }
 
-    getFlashcards();
-  }, [isLoaded, isSignedIn, user]);
+  //   getFlashcards();
+  // }, [isLoaded, isSignedIn, user]);
 
 
   const handleSubmit = async () => {

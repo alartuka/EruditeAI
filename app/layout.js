@@ -16,6 +16,17 @@ export default function RootLayout({ children }) {
       <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="lg" />
+
+        {/* <!-- Google tag (gtag.js) --> */}
+        {/* <script async strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}></script>
+        
+        <script id="ga-script" strategy="lazyOnload">
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+          gtag('config', `${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`);
+        </script> */}
         
       </head>
 
