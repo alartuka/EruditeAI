@@ -135,7 +135,7 @@ export default function Flashcards() {
             </Grid>
           ) : (
             <Typography variant="h6" sx={{ textAlign: 'center', mt: 4 }}>
-              No results found for "{searchQuery}"
+              No results found for &quot;{searchQuery}&quot;
             </Typography>
           )}
         </Box>
