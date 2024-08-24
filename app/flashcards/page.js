@@ -79,7 +79,6 @@ export default function Flashcards() {
       <Container maxWidth="100vw">
 
         <Box
-        // height="100vh"
         display={'flex'}
         flexDirection={'column'}
         alignItems={'center'}
@@ -90,7 +89,7 @@ export default function Flashcards() {
           {/* ==== SEARCH BOX ==== */}
           <TextField
           id="input-with-icon-textfield"
-          label="Search Items" 
+          label="Search Sets" 
           variant="outlined" 
           fullWidth 
           value={searchQuery} 
@@ -105,9 +104,9 @@ export default function Flashcards() {
           }}
           />
 
+          {/* ==== DISPLAY FLASHCARD SETS ==== */}
           {filteredFlashcards.length > 0  ? (
             <Grid container spacing={3} sx={{ mt: 4 }}>
-              {/* ==== DISPLAY FLASHCARD SETS ==== */}
               {filteredFlashcards.map((flashcard, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
                   <Card variant="outlined">
