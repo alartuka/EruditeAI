@@ -24,6 +24,7 @@ function Navbar() {
               </SignedOut>
 
               <SignedIn>
+              <Button color="inherit" href="/flashcards">Your Flashcards</Button> 
                 <UserButton />
               </SignedIn>
             </Stack>
