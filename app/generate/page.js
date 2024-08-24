@@ -169,7 +169,8 @@ export default function Generate() {
           fullWidth
           disabled={generating}
         >
-          Generate Flashcards
+          {/* Generate Flashcards */}
+          {generating ? 'Generating...' : 'Generate Flashcards'}
         </Button>
       </Box>
 
